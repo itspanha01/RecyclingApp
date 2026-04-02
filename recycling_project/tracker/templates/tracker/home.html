@@ -1,0 +1,40 @@
+{% extends 'tracker/base.html' %}
+{% block title %}| Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-tag">♻️ Track. Earn. Grow.</span>
+    <h1>Every piece recycled<br><em>tells a story.</em></h1>
+    <p>Log your recycling, earn points, and watch your environmental impact come to life — one material at a time.</p>
+    <div class="hero-actions">
+      <a href="{% url 'register' %}" class="btn-primary">Start Tracking Free</a>
+      <a href="{% url 'login' %}" class="btn-ghost">Sign In</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="leaf leaf-1">🍃</div>
+    <div class="leaf leaf-2">🌿</div>
+    <div class="leaf leaf-3">🍀</div>
+    <div class="circle-ring"></div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="feature-card">
+    <div class="feature-icon">📊</div>
+    <h3>Track Activity</h3>
+    <p>Log materials by type and weight. See your stats grow over time.</p>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">🏆</div>
+    <h3>Earn Points</h3>
+    <p>Different materials earn different points. Electronics score big!</p>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">🌳</div>
+    <h3>Earn Badges</h3>
+    <p>Rise from Eco Starter to Forest Guardian as your impact grows.</p>
+  </div>
+</section>
+{% endblock %}

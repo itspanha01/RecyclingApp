@@ -1,0 +1,27 @@
+{% extends 'tracker/base.html' %}
+{% block title %}| Register{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <span>🌱</span>
+      <h2>Join EcoTrack</h2>
+      <p>Start your recycling journey today</p>
+    </div>
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group">
+          <label>{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+            <span class="field-error">{{ field.errors.0 }}</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn-primary full-width">Create Account</button>
+    </form>
+    <p class="auth-switch">Already tracking? <a href="{% url 'login' %}">Sign in</a></p>
+  </div>
+</div>
+{% endblock %}
