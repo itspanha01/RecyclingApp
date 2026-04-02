@@ -8,14 +8,31 @@ Here is a unique app idea that combines **<span style="color:rgb(0, 176, 80)">Su
 
 ---
 ### Check List
-- [ ]  
-- [ ] 
-- 
+- [ ] Answer the question needed in the proposal
+- [ ] Build the app
+- [ ] Plan the presentation
+- [ ] Save the code in a .md file
+- [ ] Technical report
 
 ---
 ## Technical Requirement 
 - Web
 - Data visualization (score, bottle/can recycled)
+- 
+-----
+### Required Deliverables
+- [ ] Source code repository (well-structured, with README, setup/requirements, and instructions to
+- [ ] run).
+- [ ] Technical report (6–10 pages) detailing problem, requirements, system design, algorithms/data structures, tests, results, and reflection.
+- [ ] Slide deck for a 10–12 minute presentation plus 5–8 minutes Q&A.
+- [ ] Live demo or recorded demo showing key features and tests (where applicable).
+- [ ] Problem definition and scope, originality 
+- [ ] quality of software design (OOP best practices, algorithms/data structure fit the problem)
+- [ ] Idea and implementation quality
+- [ ] Use of libraries/frameworks (flask, pandas, matplotlib scikit-lear...)
+- [ ] readability of code
+- [ ] logical structure of presentation (diagram charts)
+- [ ] 
 
 ---
 ### Presentation
@@ -37,7 +54,8 @@ Here is a unique app idea that combines **<span style="color:rgb(0, 176, 80)">Su
 ----
 #### Final Project Proposal 
 1. All team member + team name
-2. A brief into of the application 
+2. A brief into of the application you plan to create and why
+3. The required concept you plan to use
 
 ### **The Core Concept**
 **Loop** is an app that gamifies the process of recycling and zero-waste living. Instead of just logging a chore,
