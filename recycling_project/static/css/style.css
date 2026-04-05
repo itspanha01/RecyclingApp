@@ -696,12 +696,3 @@ footer { margin-top: auto; background: var(--bark); color: rgba(255,255,255,0.4)
   font-size: 0.8rem;
   color: var(--muted);
 }
-
-/* Responsive */
-@media (max-width: 700px) {
-  .podium { gap: 0.5rem; }
-  .lb-prog-cell { display: none; }
-  .lb-table th:nth-child(6),
-  .lb-table td:nth-child(6) { display: none; }
-  .my-rank-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
-}
