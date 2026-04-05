@@ -1,89 +1,204 @@
 {% extends 'tracker/base.html' %}
 {% block title %}| Dashboard{% endblock %}
 {% block content %}
-<div class="dashboard">
 
-  <div class="dash-header">
+<div class="db">
+
+  <!-- Top bar -->
+  <div class="db-topbar">
     <div>
-      <h2>Hello, {{ user.username }} 👋</h2>
-      <p>Here's your recycling impact so far.</p>
+      <h1 class="db-hello">Good to see you, {{ user.username }}</h1>
+      <p class="db-sub">Every bottle counts. Keep going.</p>
     </div>
-    {% if badge %}
-      <div class="badge-display {{ badge.2 }}">
-        <span class="badge-icon">{{ badge.0 }}</span>
-        <span class="badge-name">{{ badge.1 }}</span>
+    <div class="pts-pill">{{ total_points }} pts total</div>
+  </div>
+
+  <!-- Flash messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="flash flash-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- 4 stat tiles -->
+  <div class="stat-row">
+    <div class="stat-tile">
+      <div class="st-lbl">Items submitted</div>
+      <div class="st-val">{{ total_items }}</div>
+      <div class="st-sub">all time</div>
+    </div>
+    <div class="stat-tile">
+      <div class="st-lbl">This month</div>
+      <div class="st-val">{{ month_items }} <span class="st-of">/ {{ monthly_cap }}</span></div>
+      <div class="st-sub">{{ month_remaining }} slots left</div>
+    </div>
+    <div class="stat-tile">
+      <div class="st-lbl">Prizes redeemed</div>
+      <div class="st-val">{{ my_redemptions.count }}</div>
+      <div class="st-sub">total prizes</div>
+    </div>
+    <div class="stat-tile">
+      <div class="st-lbl">Slots remaining</div>
+      <div class="st-val">{{ month_remaining }}</div>
+      <div class="st-sub">resets the 1st</div>
+    </div>
+  </div>
+
+  <!-- Main two-column grid -->
+  <div class="db-main">
+
+    <!-- LEFT -->
+    <div class="db-left">
+
+      <!-- Log form -->
+      <div class="card">
+        <div class="card-label">Log plastic</div>
+        <form method="post" class="log-form">
+          {% csrf_token %}
+          <input type="hidden" name="submit_plastic" value="1">
+          {% for field in form %}
+            <div class="fg">
+              <label class="fg-label">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}<span class="fg-err">{{ field.errors.0 }}</span>{% endif %}
+            </div>
+          {% endfor %}
+          <button type="submit" class="submit-btn"
+            {% if month_pct >= 100 %}disabled{% endif %}>
+            Submit ♻
+          </button>
+        </form>
       </div>
-    {% endif %}
-  </div>
 
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon">⭐</div>
-      <div class="stat-value">{{ total_points }}</div>
-      <div class="stat-label">Total Points</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">⚖️</div>
-      <div class="stat-value">{{ total_weight|floatformat:1 }} kg</div>
-      <div class="stat-label">Total Weight</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">📋</div>
-      <div class="stat-value">{{ total_entries }}</div>
-      <div class="stat-label">Total Entries</div>
-    </div>
-  </div>
+      <!-- Monthly cap -->
+      <div class="card">
+        <div class="card-label">Monthly cap</div>
+        <div class="cap-row">
+          <span>{{ month_items }} of {{ monthly_cap }} items used</span>
+          <span>{{ month_pct }}%</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-fill {% if month_pct >= 100 %}pf-red{% elif month_pct >= 75 %}pf-amber{% else %}pf-green{% endif %}"
+               style="width:{{ month_pct }}%"></div>
+        </div>
+        <p class="cap-note
+          {% if month_pct >= 100 %}cap-note-red{% elif month_pct >= 75 %}cap-note-amber{% endif %}">
+          {% if month_pct >= 100 %}
+            Monthly cap reached — resets on the 1st.
+          {% elif month_pct >= 75 %}
+            Almost full — {{ month_remaining }} slots left.
+          {% else %}
+            {{ month_remaining }} submission slots remaining this month.
+          {% endif %}
+        </p>
+      </div>
 
-  <div class="dash-body">
-    <div class="log-form-card">
-      <h3>♻️ Log Recycling</h3>
-      <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-          <div class="form-group">
-            <label>{{ field.label }}</label>
-            {{ field }}
+    </div>
+
+    <!-- RIGHT -->
+    <div class="db-right">
+
+      <!-- Prizes -->
+      <div class="card">
+        <div class="card-label">Prizes & rewards</div>
+        {% for prize in prizes_data %}
+          <div class="prize-row">
+            <div class="prize-icon">{{ prize.icon }}</div>
+            <div class="prize-body">
+              <div class="prize-name">{{ prize.name }}</div>
+              <div class="prog-track prize-track">
+                <div class="prog-fill pf-green" style="width:{{ prize.pct }}%"></div>
+              </div>
+              <div class="prize-meta">{{ prize.points_required }} pts
+                &middot;
+                {% if prize.already_redeemed %}redeemed
+                {% elif prize.pct >= 100 %}ready to redeem!
+                {% else %}{{ prize.pts_needed }} pts to go{% endif %}
+              </div>
+            </div>
+            <div class="prize-action">
+              {% if prize.already_redeemed %}
+                <span class="badge badge-done">Redeemed</span>
+              {% elif prize.pct >= 100 %}
+                <a href="{% url 'redeem_prize' prize.id %}" class="badge badge-ready">Redeem</a>
+              {% else %}
+                <span class="badge badge-lock">{{ prize.pct }}%</span>
+              {% endif %}
+            </div>
           </div>
         {% endfor %}
-        <button type="submit" class="btn-primary full-width">Log Entry</button>
-      </form>
-    </div>
+      </div>
 
-    <div class="breakdown-card">
-      <h3>📦 Material Breakdown</h3>
+      <!-- Bar chart -->
+      <div class="card">
+        <div class="card-label">Last 7 days</div>
+        <div class="chart-wrap">
+          <canvas id="weeklyChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom three-column grid -->
+  <div class="db-bottom">
+
+    <!-- Material breakdown -->
+    <div class="card">
+      <div class="card-label">By material</div>
       {% for item in breakdown %}
-        <div class="breakdown-row">
-          <span class="mat-name">{{ item.material|capfirst }}</span>
-          <span class="mat-weight">{{ item.total_weight|floatformat:1 }}kg</span>
-          <span class="mat-pts">+{{ item.total_points }}pts</span>
+        <div class="bk-row">
+          <span class="mat-chip mat-{{ item.plastic_type }}">{{ item.plastic_type|capfirst }}</span>
+          <span class="bk-pts">+{{ item.total_pts }} pts</span>
         </div>
       {% empty %}
-        <p class="empty-state">No entries yet. Log your first recycling! 🌿</p>
+        <p class="empty">No submissions yet.</p>
       {% endfor %}
     </div>
-  </div>
 
-  <div class="recent-card">
-    <h3>🕐 Recent Entries</h3>
-    <table class="entries-table">
-      <thead>
-        <tr><th>Date</th><th>Material</th><th>Weight</th><th>Points</th><th>Notes</th></tr>
-      </thead>
-      <tbody>
-        {% for entry in entries %}
+    <!-- Recent submissions -->
+    <div class="card">
+      <div class="card-label">Recent submissions</div>
+      <table class="rtbl">
+        <thead>
           <tr>
-            <td>{{ entry.date }}</td>
-            <td><span class="mat-chip mat-{{ entry.material }}">{{ entry.material|capfirst }}</span></td>
-            <td>{{ entry.weight_kg }} kg</td>
-            <td class="pts-cell">+{{ entry.points }}</td>
-            <td>{{ entry.notes|default:"—" }}</td>
+            <th>Type</th><th>Qty</th><th>Pts</th><th>Date</th>
           </tr>
-        {% empty %}
-          <tr><td colspan="5" class="empty-state">No entries yet.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          {% for s in recent %}
+            <tr>
+              <td><span class="mat-chip mat-{{ s.plastic_type }}">{{ s.plastic_type|capfirst }}</span></td>
+              <td>{{ s.quantity }}</td>
+              <td class="tbl-pts">+{{ s.points_earned }}</td>
+              <td class="tbl-date">{{ s.submitted_at|date:"M d" }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="4" class="empty">No entries yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
+    <!-- Prize codes -->
+    <div class="card">
+      <div class="card-label">My prize codes</div>
+      {% for r in my_redemptions %}
+        <div class="code-row">
+          <div>
+            <div class="code-name">{{ r.prize_name }}</div>
+            <div class="code-date">{{ r.redeemed_at|date:"M d, Y" }}</div>
+          </div>
+          <div class="code-box">{{ r.code }}</div>
+        </div>
+      {% empty %}
+        <p class="empty">No prizes redeemed yet.</p>
+      {% endfor %}
+    </div>
+
+  </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 {% endblock %}

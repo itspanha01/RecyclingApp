@@ -1,10 +1,15 @@
 from django.contrib import admin
-from .models import RecyclingEntry
+from .models import PlasticSubmission, PrizeRedemption
 
-@admin.register(RecyclingEntry)
-class RecyclingEntryAdmin(admin.ModelAdmin):
-    list_display = ['user', 'material', 'weight_kg', 'points', 'date']
-    list_filter = ['material', 'date']
-    search_fields = ['user__username', 'notes']
-    readonly_fields = ['points', 'created_at']
-    ordering = ['-created_at']
+@admin.register(PlasticSubmission)
+class PlasticSubmissionAdmin(admin.ModelAdmin):
+    list_display = ['user', 'plastic_type', 'quantity', 'points_earned', 'submitted_at']
+    list_filter = ['plastic_type', 'submitted_at']
+    search_fields = ['user__username']
+
+@admin.register(PrizeRedemption)
+class PrizeRedemptionAdmin(admin.ModelAdmin):
+    list_display = ['user', 'prize_name', 'points_spent', 'code', 'redeemed_at', 'is_used']
+    list_filter = ['prize_id', 'is_used']
+    search_fields = ['user__username', 'code']
+    readonly_fields = ['code', 'redeemed_at']

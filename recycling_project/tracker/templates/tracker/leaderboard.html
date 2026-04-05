@@ -1,0 +1,138 @@
+{% extends 'tracker/base.html' %}
+{% block title %}| Leaderboard{% endblock %}
+{% block content %}
+
+<div class="lb-page">
+
+  <!-- Header -->
+  <div class="lb-header">
+    <div>
+      <h1 class="lb-title">Leaderboard</h1>
+      <p class="lb-sub">The top recyclers in the EcoTrack community.</p>
+    </div>
+  </div>
+
+  <!-- Your rank card -->
+  <div class="my-rank-card">
+    <div class="my-rank-left">
+      <div class="my-rank-num">#{{ user_rank }}</div>
+      <div>
+        <div class="my-rank-label">Your current rank</div>
+        <div class="my-rank-name">{{ request.user.username }}</div>
+      </div>
+    </div>
+    <div class="my-rank-right">
+      <div class="my-rank-badge {{ user_badge.2 }}">
+        {{ user_badge.0 }} {{ user_badge.1 }}
+      </div>
+      <div class="my-rank-pts">{{ user_stats.total_points }} pts</div>
+    </div>
+  </div>
+
+  <!-- Top 3 podium -->
+  {% if ranked_list %}
+  <div class="podium">
+    {% for entry in ranked_list|slice:":3" %}
+      <div class="podium-slot podium-{{ entry.rank }}">
+        <div class="podium-medal">
+          {% if entry.rank == 1 %}🥇{% elif entry.rank == 2 %}🥈{% else %}🥉{% endif %}
+        </div>
+        <div class="podium-avatar">{{ entry.user.username|slice:":1"|upper }}</div>
+        <div class="podium-name">{{ entry.user.username }}</div>
+        <div class="podium-pts">{{ entry.total_points }} pts</div>
+        <div class="podium-base podium-base-{{ entry.rank }}"></div>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Full table -->
+  <div class="lb-card">
+    <table class="lb-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>User</th>
+          <th>Badge</th>
+          <th>Items</th>
+          <th>Points</th>
+          <th>Progress</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in ranked_list %}
+          <tr class="lb-row {% if entry.is_me %}lb-row-me{% endif %}">
+
+            <!-- Rank -->
+            <td class="lb-rank-cell">
+              {% if entry.rank == 1 %}
+                <span class="medal medal-gold">1</span>
+              {% elif entry.rank == 2 %}
+                <span class="medal medal-silver">2</span>
+              {% elif entry.rank == 3 %}
+                <span class="medal medal-bronze">3</span>
+              {% else %}
+                <span class="rank-num">{{ entry.rank }}</span>
+              {% endif %}
+            </td>
+
+            <!-- User -->
+            <td>
+              <div class="lb-user">
+                <div class="lb-avatar">{{ entry.user.username|slice:":1"|upper }}</div>
+                <span class="lb-username">
+                  {{ entry.user.username }}
+                  {% if entry.is_me %}<span class="you-tag">you</span>{% endif %}
+                </span>
+              </div>
+            </td>
+
+            <!-- Badge -->
+            <td>
+              <span class="lb-badge {{ entry.badge.2 }}">
+                {{ entry.badge.0 }} {{ entry.badge.1 }}
+              </span>
+            </td>
+
+            <!-- Items -->
+            <td class="lb-items">{{ entry.total_items }}</td>
+
+            <!-- Points -->
+            <td class="lb-pts">{{ entry.total_points }}</td>
+
+            <!-- Progress to next prize -->
+            <td class="lb-prog-cell">
+              <div class="lb-prog-track">
+                <div class="lb-prog-fill"
+                     style="width: {% if entry.total_points >= 300 %}100{% else %}{% widthratio entry.total_points 300 100 %}{% endif %}%">
+                </div>
+              </div>
+              <span class="lb-prog-lbl">
+                {% if entry.total_points >= 300 %}Max{% else %}{{ entry.total_points }}/300{% endif %}
+              </span>
+            </td>
+
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6" class="lb-empty">No submissions yet. Be the first! ♻️</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Points guide -->
+  <div class="pts-guide">
+    <div class="pts-guide-title">Points per item</div>
+    <div class="pts-guide-row">
+      <span class="mat-chip mat-bottle">Bottle</span><span>10 pts</span>
+      <span class="mat-chip mat-container">Container</span><span>8 pts</span>
+      <span class="mat-chip mat-bag">Bag</span><span>5 pts</span>
+      <span class="mat-chip mat-packaging">Packaging</span><span>6 pts</span>
+      <span class="mat-chip mat-other">Other</span><span>4 pts</span>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
