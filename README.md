@@ -1,4 +1,5 @@
-**<span style="color:rgb(0, 176, 80)">EcoTrack</span>**
+<span style="color:rgb(0, 176, 80)"><h1>EcoTrack</h1></span>
+
 Have you ever wondered how your trash can turn into gold? Well, the impossible is possible with EcoTrack.
 This unique app idea combines **<span style="color:rgb(0, 176, 80)">Sustainability</span>**, <span style="color:rgb(0, 176, 80)"><b>Personal Finance</b></span>, and **<span style="color:rgb(0, 176, 80)">Gamification</span>**.
 
