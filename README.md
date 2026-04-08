@@ -10,6 +10,11 @@ This unique app idea combines **<span style="color:rgb(0, 176, 80)">Sustainabili
 
 ![alt text](/recycling_project/Images/image.png)
 
+# Concept
+![alt text](<recycling_project/Images/User-admin flowchart.svg>)
+![alt text](recycling_project/Images/Input.svg)
+![alt text](<recycling_project/Images/User UI.svg>)
+
 # Releases
 - Version: **<span style="color:rgb(0, 176, 80)">1.0</span>**
 - Release date: **<span style="color:rgb(0, 176, 80)">TBA</span>**
