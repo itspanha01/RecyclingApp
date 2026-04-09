@@ -115,8 +115,35 @@ target).
 Would you like to expand on any specific feature, such as the user interface design or the business plan?
 
 
---------------------------------------
+---
 
 - computer vision
+- Data visualization (showing graphs or charts about the user reycling habit)
 - adding score to each users account
 - Deducting score to get gift
+
+---
+NEED CHANGE
+- only accept plastic bottle, can metal can
+- change notification (shouldn't be at the top)--> just a pop up
+- change price redeemed -> current score
+- graph not working--need update
+
+---
+- Who is this app for: work directly with the recycling plan to help bring more customer
+- Problem: 
+    - people don't care about recycling
+    - recyling plan wants to expand their business
+- Solution: our app
+    - encourage people to develope a recyling habit
+    - Therefore, bring more revenue for the recyling plan
+
+- Features:
+    - 
+
+    https://www.eco-business-cambodia.com/add-a-business
+
+- they pay us for the product, customer and ad
+![alt text](<User-admin flowchart.svg>)
+![alt text](Input.svg)
+![alt text](<User UI.svg>)
