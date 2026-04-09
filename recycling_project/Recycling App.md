@@ -144,6 +144,17 @@ NEED CHANGE
     https://www.eco-business-cambodia.com/add-a-business
 
 - they pay us for the product, customer and ad
-![alt text](<User-admin flowchart.svg>)
+![alt text](<recycling_project/Images/User-admin flowchart.svg>)
 ![alt text](Input.svg)
 ![alt text](<User UI.svg>)
+
+
+---
+important info:
+
+- Presentation 15 min (no powerpoint)
+- Don’t forget to add your photo and name on the technical report
+
+
+PRESENT: Monday 20th
+
